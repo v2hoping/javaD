@@ -10,6 +10,7 @@ import java.util.Hashtable;
 public class HashtableD {
 
     public static void main(String[] args) {
-
+        int i = 0x01;
+        String s = Integer.toBinaryString(i);
     }
 }
