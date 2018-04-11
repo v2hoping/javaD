@@ -11,8 +11,6 @@ public class IntegerD {
 
     @Test
     public void test() {
-        Integer integer = new Integer(1);
-        int MIN_VALUE = 0x80000000;
         Integer integer = new Integer(111);
         String s = integer.toString();
         System.setProperty("111", "222");
