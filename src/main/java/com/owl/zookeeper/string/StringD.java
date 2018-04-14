@@ -5,8 +5,7 @@ package com.owl.zookeeper.string;
  * @author houping wang
  */
 public class StringD {
-
     public static void main(String[] args) {
-
+        String str = "a" + "b";
     }
 }
