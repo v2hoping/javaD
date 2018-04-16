@@ -170,6 +170,7 @@ public class IntegerD {
         int i3 = SignumD.signumD(0);
     }
 
+    @Test
     public void reverseBytes() {
         int i = 1;
         // [3][2][1][0]

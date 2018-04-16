@@ -6,6 +6,15 @@ package com.owl.zookeeper.string;
  */
 public class StringD {
     public static void main(String[] args) {
-        String str = "a" + "b";
+//        String str = "a" + "b";
+        String a = new String("AB");
+        String b = "AB";
+        String c = a.intern();
+        if(a == c) {
+            System.out.println("a == c");
+        }
+        if(b == c) {
+            System.out.println("b == c");
+        }
     }
 }
