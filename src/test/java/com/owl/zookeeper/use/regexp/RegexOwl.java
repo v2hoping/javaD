@@ -519,22 +519,34 @@ public class RegexOwl {
 
         /**
          * 验证日期（年月日）
-         *
+         * 正例：1993-09-03、1992.09.03、1990-08-01
+         * 反例：1993-0-0、1993.09-03、空字符串
          * @param birthday 日期，格式：1992-09-03，或1992.09.03
          * @return 验证成功返回true，验证失败返回false
          */
         public static boolean checkBirthday(String birthday) {
-            return false;
+            String regex = "^[1-9]\\d{3}(\\.|-)\\d{2}\\1\\d{2}$";
+            return Pattern.matches(regex, birthday);
         }
 
         /**
          * 验证URL地址
-         *
+         * 可以匹配参数，但是注意以下特殊符号。
+         * +    URL 中+号表示空格                                 %2B
+         * 空格 URL中的空格可以用+号或者编码           %20
+         * /   分隔目录和子目录                                     %2F
+         * ?    分隔实际的URL和参数                             %3F
+         * %    指定特殊字符                                          %25
+         * #    表示书签                                                  %23
+         * &    URL 中指定的参数间的分隔符                  %26
+         * =    URL 中指定参数的值                                %3D
+         * ftp、ftps、http、https
          * @param url 格式：http://blog.csdn.net:80/xyang81/article/details/7705960? 或 http://www.csdn.net:80
          * @return 验证成功返回true，验证失败返回false
          */
         public static boolean checkURL(String url) {
-            return false;
+            String regex = "^((ft|ht)tps?//(w{3}\\\\.)?)?\\\\w+\\\\.\\\\w+(\\\\.[a-zA-Z]+)*(:\\\\d{1,5})?(/\\\\w*)*(\\\\??(.+=.*)?(&.+=.*)?)?$";
+            return  Pattern.matches(regex, url);
         }
 
         /**
@@ -547,7 +559,12 @@ public class RegexOwl {
          * @return
          */
         public static String getDomain(String url) {
-            return "";
+            Pattern p = Pattern.compile("(?<=http://|\\.)[^.]*?\\.(com|cn|net|org|biz|info|cc|tv)", Pattern.CASE_INSENSITIVE);
+            // 获取完整的域名
+            // Pattern p=Pattern.compile("[^//]*?\\.(com|cn|net|org|biz|info|cc|tv)", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = p.matcher(url);
+            matcher.find();
+            return matcher.group();
         }
 
         /**
@@ -557,7 +574,8 @@ public class RegexOwl {
          * @return 验证成功返回true，验证失败返回false
          */
         public static boolean checkPostcode(String postcode) {
-            return false;
+            String regex = "^\\d{5}$";
+            return  Pattern.matches(regex, postcode);
         }
 
         /**
@@ -567,17 +585,38 @@ public class RegexOwl {
          * @return 验证成功返回true，验证失败返回false
          */
         public static boolean checkIpAddress(String ipAddress) {
-            return false;
+            String regex = "^[1-9]\\d{0,2}(\\.([1-9]\\d{0,2}|0)){3}$";
+            return Pattern.matches(regex, ipAddress);
         }
 
         /**
          * 匹配车牌号.
+         * 第一：普通汽车
+         * 车牌号格式：汉字 + A-Z + 5位A-Z或0-9(  车牌号不存在字母I和O防止和1、0混淆)
+         * （只包括了普通车牌号，教练车，警等车牌号 。部分部队车，新能源不包括在内）
+         * 京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼军空海北沈兰济南广成使领
+         * 普通汽车规则："[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1}"
+         * 正例：鲁B12345、贵Z12G33、鲁G1003学
+         * 反例：鲁B123456、鲁B1O234
          *
+         *  第二：新能源车
+         * 组成：省份简称（1位汉字）+发牌机关代号（1位字母）+序号（6位），总计8个字符，序号不能出现字母I和字母O
+         * 通用规则：不区分大小写，第一位：省份简称（1位汉字），第二位：发牌机关代号（1位字母）
+         * 序号位：
+         * 小型车，第一位：只能用字母D或字母F，第二位：字母或者数字，后四位：必须使用数字
+         * ---([DF][A-HJ-NP-Z0-9][0-9]{4})
+         * 大型车，前五位：必须使用数字，第六位：只能用字母D或字母F。
+         * ----([0-9]{5}[DF])
+         * 新能源车规则："[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF])|([DF][A-HJ-NP-Z0-9][0-9]{4}))"
+         * 正例：鲁B012345D、鲁BD12345
+         *
+         * 总规则："([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1})"
          * @param plateNumber 车牌号
          * @return 验证成功返回true，验证失败返回false
          */
         public static boolean checkPlateNumber(String plateNumber) {
-            return false;
+            String regex = "([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1})";
+            return Pattern.matches(regex, plateNumber);
         }
     }
 

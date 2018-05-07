@@ -516,6 +516,48 @@ public class RegexOwlTest {
     }
 
     @Test
+    public void checkBirthday() {
+        //1993-09-03、1992.09.03、1990-08-01
+        Assert.assertTrue(RegexOwl.Application.checkBirthday("1993-09-03"));
+        Assert.assertTrue(RegexOwl.Application.checkBirthday("1992.09.03"));
+        Assert.assertTrue(RegexOwl.Application.checkBirthday("1990-08-01"));
+        //1993-0-0、1993.09-03、空字符串
+        Assert.assertFalse(RegexOwl.Application.checkBirthday("1993-0-0"));
+        Assert.assertFalse(RegexOwl.Application.checkBirthday("1993.09-03"));
+        Assert.assertFalse(RegexOwl.Application.checkBirthday(""));
+    }
+
+    @Test
+    public void getDomain() {
+    }
+
+    @Test
+    public void checkIpAddress() {
+        //1.0.0.1、192.168.0.1、201.0.0.1
+        Assert.assertTrue(RegexOwl.Application.checkIpAddress("1.0.0.1"));
+        Assert.assertTrue(RegexOwl.Application.checkIpAddress("192.168.0.1"));
+        Assert.assertTrue(RegexOwl.Application.checkIpAddress("201.0.0.1"));
+        //0.0.0.0、0.123.123.123、1923.1.1.11923.1.1.1
+        Assert.assertFalse(RegexOwl.Application.checkIpAddress("0.0.0.0"));
+        Assert.assertFalse(RegexOwl.Application.checkIpAddress("0.123.123.123"));
+        Assert.assertFalse(RegexOwl.Application.checkIpAddress("1923.1.1.1"));
+    }
+
+    @Test
+    public void checkPlateNumber() {
+        //鲁B12345、贵Z12G33、鲁G1003学、鲁B01234D、鲁BD12345
+        Assert.assertTrue(RegexOwl.Application.checkPlateNumber("鲁B12345"));
+        Assert.assertTrue(RegexOwl.Application.checkPlateNumber("贵Z12G33"));
+        Assert.assertTrue(RegexOwl.Application.checkPlateNumber("鲁G1003学"));
+        Assert.assertTrue(RegexOwl.Application.checkPlateNumber("鲁B01234D"));
+        Assert.assertTrue(RegexOwl.Application.checkPlateNumber("鲁BD12345"));
+        //鲁B123456、鲁B1O234
+//        Assert.assertFalse(RegexOwl.Application.checkPlateNumber("0.0.0.0"));
+//        Assert.assertFalse(RegexOwl.Application.checkIpAddress("0.123.123.123"));
+//        Assert.assertFalse(RegexOwl.Application.checkIpAddress("1923.1.1.1"));
+    }
+
+    @Test
     public void test() {
         String regex = "(?<=(?:href=\")).{1,200}(?=(?:\">))";
         String str = "href=\"www.baidu.com\">";

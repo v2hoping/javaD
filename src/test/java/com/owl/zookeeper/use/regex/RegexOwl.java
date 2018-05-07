@@ -138,7 +138,4 @@ public class RegexOwl {
         return false;
     }
 
-    public static boolean checkPlateNumber(String plateNumber) {
-
-    }
 }
