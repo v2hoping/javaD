@@ -552,13 +552,13 @@ public class RegexOwlTest {
         Assert.assertTrue(RegexOwl.Application.checkPlateNumber("鲁B01234D"));
         Assert.assertTrue(RegexOwl.Application.checkPlateNumber("鲁BD12345"));
         //鲁B123456、鲁B1O234
-//        Assert.assertFalse(RegexOwl.Application.checkPlateNumber("0.0.0.0"));
-//        Assert.assertFalse(RegexOwl.Application.checkIpAddress("0.123.123.123"));
-//        Assert.assertFalse(RegexOwl.Application.checkIpAddress("1923.1.1.1"));
+        Assert.assertFalse(RegexOwl.Application.checkPlateNumber("鲁B123456"));
+        Assert.assertFalse(RegexOwl.Application.checkIpAddress("鲁B1O234"));
     }
 
     @Test
     public void test() {
+        String name = "";
         String regex = "(?<=(?:href=\")).{1,200}(?=(?:\">))";
         String str = "href=\"www.baidu.com\">";
         Pattern compile = Pattern.compile(regex);
